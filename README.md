@@ -2,8 +2,8 @@
 
 Express.js backend for the Imagify AI Image SaaS application.
 
-**Live API:** https://server-seven-theta-68.vercel.app  
-**Frontend:** https://client-kappa-sepia-85.vercel.app ([imagify-client](https://github.com/Prj-007/imagify-client))
+
+**Live Demo:** https://client-kappa-sepia-85.vercel.app 
 
 ## Tech Stack
 
