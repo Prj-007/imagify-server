@@ -19,7 +19,8 @@ Express.js backend for the Imagify AI Image SaaS application.
 | POST | `/api/user/register` | Register new user (5 free credits) |
 | POST | `/api/user/login` | Login and get JWT token |
 | GET | `/api/user/credits` | Get user credit balance |
-| POST | `/api/user/pay-razor` | Buy credits (demo mode) |
+| POST | `/api/user/pay-razor` | Create a Razorpay order to buy credits |
+| POST | `/api/user/verify-razor` | Verify Razorpay payment signature and add credits |
 | POST | `/api/image/generate-image` | Generate image from prompt |
 
 ## Getting Started
@@ -29,4 +30,4 @@ npm install
 npm start
 ```
 
-Set `JWT_SECRET` in `.env`.
+Set in `.env`: `JWT_SECRET`, `RAZORPAY_KEY_ID`, `RAZORPAY_KEY_SECRET`, `CURRENCY` (optional, defaults to `INR`).
