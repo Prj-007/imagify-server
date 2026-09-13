@@ -7,10 +7,19 @@ import Razorpay from 'razorpay'
 
 const plans = { Basic: { price: 10, credits: 100 }, Advanced: { price: 50, credits: 500 }, Business: { price: 250, credits: 5000 } }
 
-const razorpayInstance = new Razorpay({
-  key_id: process.env.RAZORPAY_KEY_ID,
-  key_secret: process.env.RAZORPAY_KEY_SECRET,
-})
+let razorpayInstance = null
+const getRazorpayInstance = () => {
+  if (!process.env.RAZORPAY_KEY_ID || !process.env.RAZORPAY_KEY_SECRET) {
+    throw new Error('Razorpay is not configured. Set RAZORPAY_KEY_ID and RAZORPAY_KEY_SECRET.')
+  }
+  if (!razorpayInstance) {
+    razorpayInstance = new Razorpay({
+      key_id: process.env.RAZORPAY_KEY_ID,
+      key_secret: process.env.RAZORPAY_KEY_SECRET,
+    })
+  }
+  return razorpayInstance
+}
 
 const registerUser = async (req, res) => {
   try {
@@ -88,7 +97,7 @@ const paymentRazorpay = async (req, res) => {
 
     const transaction = await transactionModel.create({ userId, planId, amount: plan.price, credits: plan.credits })
 
-    const order = await razorpayInstance.orders.create({
+    const order = await getRazorpayInstance().orders.create({
       amount: plan.price * 100,
       currency: process.env.CURRENCY || 'INR',
       receipt: transaction._id,
@@ -119,7 +128,7 @@ const verifyRazorpay = async (req, res) => {
       return res.json({ success: false, message: 'Payment verification failed' })
     }
 
-    const orderInfo = await razorpayInstance.orders.fetch(razorpay_order_id)
+    const orderInfo = await getRazorpayInstance().orders.fetch(razorpay_order_id)
     if (orderInfo.status !== 'paid') {
       return res.json({ success: false, message: 'Payment not completed' })
     }
