@@ -153,30 +153,4 @@ const verifyRazorpay = async (req, res) => {
   }
 }
 
-const paymentStripe = async (req, res) => {
-  try {
-    const { userId, planId } = req.body
-    const userData = await userModel.findById(userId)
-
-    if (!userData || !planId) {
-      return res.json({ success: false, message: 'Missing Details' })
-    }
-
-    const plans = { Basic: 100, Advanced: 500, Business: 5000 }
-    const credits = plans[planId]
-    if (!credits) return res.json({ success: false, message: 'Plan not found' })
-
-    await userModel.findByIdAndUpdate(userId, { creditBalance: userData.creditBalance + credits })
-    res.json({ success: true, session_url: null, message: `${credits} credits added (demo mode)` })
-
-  } catch (error) {
-    console.log(error)
-    res.json({ success: false, message: error.message })
-  }
-}
-
-const verifyStripe = async (req, res) => {
-  res.json({ success: true, message: 'Payment verified (demo mode)' })
-}
-
-export { registerUser, loginUser, userCredits, paymentRazorpay, verifyRazorpay, paymentStripe, verifyStripe }
+export { registerUser, loginUser, userCredits, paymentRazorpay, verifyRazorpay }
