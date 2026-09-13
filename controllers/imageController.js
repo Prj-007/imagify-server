@@ -15,9 +15,9 @@ export const generateImage = async (req, res) => {
       return res.json({ success: false, message: 'No Credit Balance', creditBalance: user.creditBalance })
     }
 
-    // Pollinations.ai — free, no API key required
+    // Pollinations.ai — free, no API key required. enhance=true lets it improve the raw prompt, which noticeably reduces distorted output.
     const { data } = await axios.get(
-      `https://image.pollinations.ai/prompt/${encodeURIComponent(prompt)}?width=1024&height=1024&nologo=true`,
+      `https://image.pollinations.ai/prompt/${encodeURIComponent(prompt)}?model=flux&width=1024&height=1024&nologo=true&enhance=true`,
       { responseType: 'arraybuffer' }
     )
 
